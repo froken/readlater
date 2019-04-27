@@ -3,10 +3,12 @@
 
     constructor() {
         this.defaultHeaders = {
-            Accept: 'application/json',
+            'Accept': 'application/json',
+            'X-Accept': 'application/json',
             'Access-Control-Allow-Credentials': 'true',
             'Access-Control-Allow-Origin': 'localhost',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Origin': 'localhost:5001'
         };
     }
 

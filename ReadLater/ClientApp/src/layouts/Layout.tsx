@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {withStyles, WithStyles} from '@material-ui/core/styles';
-import AppAppBar from '../components/AppBar';
+import Menu from '../components/Menu';
 import Grid from '@material-ui/core/Grid';
 
 export interface IProps extends WithStyles<typeof styles> {
@@ -15,11 +15,19 @@ export interface IState {
 
 const styles = (theme: any) => ({
     root: {
-        margin: 0
+        height: '100%',
+        minHeight: '100%',
+        alignItems: 'stretch'
+    },
+    header: {
+        flexGrow: 0
     },
     content: {
-
-    }
+        flexGrow: 1
+    },
+    footer: {
+        flexGrow: 0
+    },
 });
 
 export class Layout extends React.Component<IProps, IState> {
@@ -35,14 +43,17 @@ export class Layout extends React.Component<IProps, IState> {
         const {classes, children} = this.props;
 
         return (
-            <div className={classes.root}>
-                <AppAppBar />
-                <Grid container className={classes.root} alignItems="center" justify="center">
-                    <Grid item xs={12}>
-                        {children}
-                    </Grid>
+            <Grid container className={classes.root} direction="column">
+                <Grid item className={classes.header}>
+                    <Menu />
                 </Grid>
-            </div>
+                <Grid item className={classes.content}>
+                    {children}
+                </Grid>
+                <Grid item className={classes.footer}>
+                    Footer
+                </Grid>
+            </Grid>
         );
     }
 }

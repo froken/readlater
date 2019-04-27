@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using ReadLater.Data;
 using ReadLater.Extensions;
 using ReadLater.Models;
+using ReadLater.Services.Pocket;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -59,7 +60,9 @@ namespace ReadLater
                     options.LoginPath = "/account/login";
                 });
 
+           
             services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureMyCookie>();
+            services.AddScoped<IPocketService, PocketService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
