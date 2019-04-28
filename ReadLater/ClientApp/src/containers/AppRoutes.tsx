@@ -7,7 +7,8 @@ import { IRootState } from "../reducers/root-reducer";
 
 const mapStateToProps = (state: IRootState, props: IProps): IStateProps => {
   return {
-      isAuthenticated: state.userState.isAuthenticated
+      isAuthenticated: state.userState.isAuthenticated,
+      hasPocketCode: state.pocketState.code ? true : false
   };
 };
 

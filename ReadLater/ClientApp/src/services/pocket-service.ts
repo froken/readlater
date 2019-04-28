@@ -1,22 +1,24 @@
-import {User} from '../models/user';
 import RequestService from './request-service';
-import AuthResult from './auth-result';
 
 class PocketService extends RequestService {
     constructor() {
         super();
     }
 
-    public async getRequestToken() {
-        const body = {
-            consumer_key: '84468-64a87fb1c2e843d4d28f1981',
-            redirect_uri: 'http://localhost:5001/'
-        };
-
-        return await this.request('https://getpocket.com/v3/oauth/request', 'post', body);
+    public async getRequestToken(): Promise<string> {
+        var token = await this.requestWithResponse('/api/pocket/token/request', 'post', undefined);
+        return token;
     }
 
-   
+    public async getAuthorizeUrl(token: string): Promise<string> {
+        var redirectUri = window.location.href;
+        return `https://getpocket.com/auth/authorize?request_token=${token}&redirect_uri=${redirectUri}`;
+    }
+
+    public async getAccessToken(code: string): Promise<string> {
+        var token = await this.requestWithResponse('/api/pocket/token', 'post', undefined);
+        return token;
+    }
 }
 
 const pocketService = new PocketService();

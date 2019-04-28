@@ -10,37 +10,53 @@ const styles = (theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             height: '100%',
+            flexDirection: 'column'
         },
         hello: {
             textAlign: 'center',
         },
         login: {
-            marginTop: theme.spacing.unit * 5
-        }
+            marginTop: theme.spacing.unit * 5,
+        },
     });
 
-export interface IProps extends WithStyles<typeof styles> {}
+export interface IDispatchProps {
+    loginWithPocket: () => {};
+}
 
-export class Hello extends React.Component<IProps, {}> {
-    constructor(props: IProps) {
+export interface IState {
+}
+
+export interface IProps extends WithStyles<typeof styles> {
+
+}
+
+export class Hello extends React.Component<IProps & IDispatchProps, IState> {
+    constructor(props: IProps & IDispatchProps) {
         super(props);
+        this.loginWithPocket = this.loginWithPocket.bind(this);
     }
 
-    componentDidMount() {
-        pocketService.getRequestToken();
+    public loginWithPocket() {
+        this.props.loginWithPocket();
     }
 
     render() {
         const {classes} = this.props;
         return (
-            <Grid container direction="column" className={classes.root}>
+            <Grid container className={classes.root}>
                 <Grid item>
                     <Typography variant="h1" className={classes.hello}>
                         Hello
                     </Typography>
                 </Grid>
                 <Grid item className={classes.login}>
-                    <Button variant="contained" color="primary">Login with pocket</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.loginWithPocket}>
+                        Login with pocket
+                    </Button>
                 </Grid>
             </Grid>
         );

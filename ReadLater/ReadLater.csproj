@@ -37,4 +37,9 @@
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReadLater.BusinessLogic\ReadLater.BusinessLogic.csproj" />
+    <ProjectReference Include="..\ReadLater.Database\ReadLater.Database.csproj" />
+  </ItemGroup>
+
 </Project>

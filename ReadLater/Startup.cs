@@ -12,7 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using ReadLater.BusinessLogic;
 using ReadLater.Data;
+using ReadLater.Database.Context;
+using ReadLater.Database.UserSession;
 using ReadLater.Extensions;
 using ReadLater.Models;
 using ReadLater.Services.Pocket;
@@ -43,6 +46,10 @@ namespace ReadLater
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("authorization")));
 
+            services.AddDbContext<ReadDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("read"),
+                    x => x.MigrationsAssembly("ReadLater.Database")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -63,6 +70,8 @@ namespace ReadLater
            
             services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureMyCookie>();
             services.AddScoped<IPocketService, PocketService>();
+            services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+            services.AddScoped<IUserSessionService, UserSessionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

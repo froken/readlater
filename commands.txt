@@ -1,0 +1,2 @@
+dotnet ef migrations add ReadInitial --context ReadDbContext --startup-project ./ReadLater/ --project ./ReadLater.Database/
+dotnet ef database update --startup-project ./ReadLater/ --project ./ReadLater.Database/ --context ReadDbContext
