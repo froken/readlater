@@ -4,11 +4,12 @@ import { ThunkDispatch } from "redux-thunk";
 import { authenticate } from "../actions/user-actions";
 import { IDispatchProps, IProps, IState, AppRoutes, IStateProps } from "../components/AppRoutes";
 import { IRootState } from "../reducers/root-reducer";
+import { getPocketAccount } from "../actions/pocket-actions";
 
 const mapStateToProps = (state: IRootState, props: IProps): IStateProps => {
   return {
       isAuthenticated: state.userState.isAuthenticated,
-      hasPocketCode: state.pocketState.code ? true : false
+      hasPocketCode: state.pocketState.accessToken ? true : false
   };
 };
 
@@ -16,6 +17,7 @@ const mapStateToProps = (state: IRootState, props: IProps): IStateProps => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, Action>): IDispatchProps => {
   return {
       authenticate: () => dispatch(authenticate(dispatch)),
+      getPocketAccount: () => dispatch(getPocketAccount(dispatch))
   };
 };
 

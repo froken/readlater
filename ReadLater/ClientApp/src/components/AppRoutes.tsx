@@ -19,6 +19,7 @@ export interface IStateProps {
 
 export interface IDispatchProps {
     authenticate: () => any;
+    getPocketAccount: () => any;
 }
 
 export class AppRoutes extends React.Component<IProps & IStateProps & IDispatchProps, {}> {
@@ -28,6 +29,7 @@ export class AppRoutes extends React.Component<IProps & IStateProps & IDispatchP
 
     componentDidMount() {
         this.props.authenticate();
+        this.props.getPocketAccount();
     }
 
     public render() {

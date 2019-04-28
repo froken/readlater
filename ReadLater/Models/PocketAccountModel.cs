@@ -1,16 +1,11 @@
-﻿using System;
-
-namespace ReadLater.Database.UserSession
+﻿namespace ReadLater.Models
 {
-    public class UserSession
+    public class PocketAccountModel
     {
-        public string UserSessionId { get; set; }
-
         public string UserName { get; set; }
 
         public string RequestToken { get; set; }
 
         public string AccessToken { get; set; }
-
     }
 }

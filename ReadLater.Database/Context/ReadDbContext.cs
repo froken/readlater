@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReadLater.Database.Models;
 
 namespace ReadLater.Database.Context
 {
     public class ReadDbContext : DbContext
     {
-        public DbSet<UserSession> UserSessions { get; set; }
+        public DbSet<ReadLater.Database.UserSession.UserSession> UserSessions { get; set; }
 
         public ReadDbContext()
         {

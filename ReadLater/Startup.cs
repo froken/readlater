@@ -13,12 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using ReadLater.BusinessLogic;
+using ReadLater.BusinessLogic.Pocket;
 using ReadLater.Data;
 using ReadLater.Database.Context;
 using ReadLater.Database.UserSession;
-using ReadLater.Extensions;
 using ReadLater.Models;
-using ReadLater.Services.Pocket;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -114,12 +113,6 @@ namespace ReadLater
                         defaults: new { controller = "Home", action = "Index" });
                 });
             });
-
-            //app.UseRouting(routes =>
-            //{
-            //    routes.MapDefaultControllerRoute();
-
-            //});
 
             app.UseAuthentication();
 

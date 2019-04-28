@@ -1,5 +1,6 @@
 ﻿using ReadLater.Database.Context;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ReadLater.Database.UserSession
 {
@@ -12,9 +13,33 @@ namespace ReadLater.Database.UserSession
             _context = context;
         }
 
-        public UserSession GetUserSession(string userId)
+        public async System.Threading.Tasks.Task<UserSession> CreateUserSessionAsync(string userName)
         {
-            return _context.UserSessions.Where(s => s.UserId == userId).FirstOrDefault();
+            var userSession = new UserSession
+            {
+                UserName = userName
+            };
+
+            _context.UserSessions.Add(userSession);
+
+            await _context.SaveChangesAsync();
+
+            return userSession;
+        }
+
+        public UserSession GetUserSession(string userName)
+        {
+            return _context.UserSessions.FirstOrDefault(s => s.UserName == userName);
+        }
+
+        public async Task UpdateUserSessionAsync(UserSession userSession)
+        {
+            var session = _context.UserSessions.FirstOrDefault(s => s.UserName == userSession.UserName);
+
+            session.AccessToken = userSession.AccessToken;
+            session.RequestToken = userSession.RequestToken;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReadLater.BusinessLogic;
 using ReadLater.Models;
-using ReadLater.Services.Pocket;
 using System.Threading.Tasks;
 
 namespace ReadLater.Controllers
@@ -12,13 +11,11 @@ namespace ReadLater.Controllers
     public class PocketController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IPocketService _pocketService;
         private readonly IUserSessionService _userSessionService;
 
-        public PocketController(UserManager<ApplicationUser> userManager, IPocketService pocketService, IUserSessionService userSessionService)
+        public PocketController(UserManager<ApplicationUser> userManager, IUserSessionService userSessionService)
         {
             _userManager = userManager;
-            _pocketService = pocketService;
             _userSessionService = userSessionService;
         }
 
@@ -26,24 +23,37 @@ namespace ReadLater.Controllers
         [Route("token/request")]
         public async Task<IActionResult> RequestToken()
         {
-            var token = await _pocketService.GetRequestTokenAsync();
+            var userName = HttpContext.User.Identity.Name;
+            var token = await _userSessionService.GetRequestTokenAsync(userName);
+
             return new JsonResult(token);
         }
 
         [HttpPost]
         [Route("token/access")]
-        public IActionResult AccessToken()
+        public async Task<IActionResult> AccessTokenAsync()
         {
-            var accessToken = _userSessionService.GetAccessToken(HttpContext.User.Identity.Name);
+            var userName = HttpContext.User.Identity.Name;
+            var accessToken = await _userSessionService.GetAccessTokenAsync(userName);
 
-            if (accessToken != null)
+            return new JsonResult(accessToken);
+        }
+
+        [HttpGet]
+        [Route("account")]
+        public IActionResult Account()
+        {
+            var userName = HttpContext.User.Identity.Name;
+            var userSession = _userSessionService.GetUserSession(userName);
+
+            var pocketAccount = new PocketAccountModel
             {
-                return new JsonResult(new { accessToken });
-            }
+                UserName = userName,
+                RequestToken = userSession.RequestToken,
+                AccessToken = userSession.AccessToken
+            };
 
-
-
-            return new JsonResult(token);
+            return new JsonResult(pocketAccount);
         }
     }
 }
