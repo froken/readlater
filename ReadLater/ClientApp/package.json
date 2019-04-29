@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
-    "@babel/polyfill": "^7.4.3",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "aspnet-webpack": "^3.0.0",
