@@ -6,8 +6,10 @@ namespace ReadLater.BusinessLogic
     {
         UserSession GetUserSession(string userName);
 
-        Task<string> GetAccessTokenAsync(string userName);
+        string GetAccessToken(string userName);
 
         Task<string> GetRequestTokenAsync(string userName);
+
+        Task AuthorizeRequestTokenAsync(string userName);
     }
 }

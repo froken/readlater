@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ReadLater.Services;
-using ReadLater.Services.Pocket;
+using ReadLater.BusinessLogic.Pocket;
 using System.Threading.Tasks;
 
 namespace ReadLater.Tests

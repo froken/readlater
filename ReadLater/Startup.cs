@@ -20,13 +20,14 @@ using ReadLater.Database.UserSession;
 using ReadLater.Models;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ReadLater
 {
     public class Startup
     {
-        public const string CookieScheme = "YourSchemeName";
+        public const string CookieScheme = "ReadLater";
 
         public Startup(IConfiguration configuration)
         {
@@ -36,9 +37,13 @@ namespace ReadLater
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            Mapper.Initialize(cfg => { cfg.AddProfile(new AutomapperProfile()); });
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutomapperProfile());
+            });
 
-            services.AddAutoMapper();
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddMvc().AddNewtonsoftJson();
             
@@ -49,25 +54,47 @@ namespace ReadLater
                 options.UseSqlServer(Configuration.GetConnectionString("read"),
                     x => x.MigrationsAssembly("ReadLater.Database")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+            {
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-
-            services.AddAuthentication(CookieScheme) 
-                .AddCookie(CookieScheme, options =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
-                    options.AccessDeniedPath = "/account/denied";
-                    options.LoginPath = "/account/login";
+                    options.Cookie.Name = ".readlater";
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.SlidingExpiration = true;
                 });
 
-           
-            services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureMyCookie>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
+            
+
             services.AddScoped<IPocketService, PocketService>();
             services.AddScoped<IUserSessionRepository, UserSessionRepository>();
             services.AddScoped<IUserSessionService, UserSessionService>();
@@ -78,8 +105,6 @@ namespace ReadLater
         {
             if (env.IsDevelopment())
             {
-               // env.UseRootNodeModules();
-
                 var webpackOptions = new WebpackDevMiddlewareOptions
                 {
                     ConfigFile = "webpack.dev.js",
@@ -96,6 +121,7 @@ namespace ReadLater
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -113,11 +139,9 @@ namespace ReadLater
                         defaults: new { controller = "Home", action = "Index" });
                 });
             });
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
         }
+
+ 
     }
 
     public class IgnoreRouteMiddleware

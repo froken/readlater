@@ -12,7 +12,7 @@ class PocketService extends RequestService {
     }
 
     public async getAuthorizeUrl(token: string): Promise<string> {
-        var redirectUri = window.location.href;
+        var redirectUri = 'https://localhost:5001/api/pocket/auth';
         return `https://getpocket.com/auth/authorize?request_token=${token}&redirect_uri=${redirectUri}`;
     }
 

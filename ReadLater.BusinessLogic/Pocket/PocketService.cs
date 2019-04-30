@@ -56,5 +56,26 @@ namespace ReadLater.BusinessLogic.Pocket
 
             return token.Token;
         }
+
+        public async Task GetReadList(string token)
+        {
+            var content = new
+            {
+                consumer_key = ConsumerKey,
+                access_token = token
+            };
+
+            var json = JsonConvert.SerializeObject(content);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/v3/get");
+            request.Headers.Add("X-Accept", "application/json");
+            request.Content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+
+            var response = await _client.SendAsync(request);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var token = JsonConvert.DeserializeObject<AccessToken>(responseContent);
+
+            return token.Token;
+        }
     }
 }

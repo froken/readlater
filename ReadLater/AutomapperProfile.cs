@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReadLater.BusinessLogic;
 using ReadLater.Models;
 
 namespace ReadLater
@@ -7,7 +8,7 @@ namespace ReadLater
     {
         public AutomapperProfile()
         {
-            CreateMap<RegisterModel, ApplicationUser>();
+            CreateMap<Database.UserSession.UserSession, UserSession>();
         }
     }
 }
