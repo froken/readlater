@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ReadLater.BusinessLogic.Pocket
 {
@@ -6,6 +7,7 @@ namespace ReadLater.BusinessLogic.Pocket
     {
         public int Status { get; set; }
 
-        public Dictionary<int, PocketItem> Items { get; set; }
+        [JsonProperty("list")]
+        public Dictionary<string, PocketItem> Items { get; set; }
     }
 }

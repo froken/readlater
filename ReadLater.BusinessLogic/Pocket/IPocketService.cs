@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using ReadLater.BusinessLogic.Read;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReadLater.BusinessLogic.Pocket
 {
@@ -7,5 +9,7 @@ namespace ReadLater.BusinessLogic.Pocket
         Task<string> GetRequestTokenAsync();
 
         Task<string> GetAccessTokenAsync(string code);
+
+        Task<PocketList> GetReadListAsync(string accessToken);
     }
 }

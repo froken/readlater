@@ -18,7 +18,7 @@ namespace ReadLater.BusinessLogic.Pocket
         public string GivenTitle { get; set; }
 
         [JsonProperty("favorite")]
-        public bool Favorite { get; set; }
+        public int Favorite { get; set; }
 
         [JsonProperty("status")]
         public int Status { get; set; }
@@ -33,13 +33,13 @@ namespace ReadLater.BusinessLogic.Pocket
         public string Excerpt { get; set; }
 
         [JsonProperty("is_article")]
-        public bool IsArticle { get; set; }
+        public int IsArticle { get; set; }
 
         [JsonProperty("has_video")]
-        public bool HasVideo { get; set; }
+        public int HasVideo { get; set; }
 
         [JsonProperty("has_image")]
-        public bool HasImage { get; set; }
+        public int HasImage { get; set; }
 
         [JsonProperty("word_count")]
         public int WordCount { get; set; }

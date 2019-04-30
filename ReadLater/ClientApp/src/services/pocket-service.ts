@@ -1,5 +1,5 @@
 import RequestService from './request-service';
-import { PocketAccount } from '../models/pocketAccount';
+import { PocketAccount } from '../models/pocket-account';
 
 class PocketService extends RequestService {
     constructor() {

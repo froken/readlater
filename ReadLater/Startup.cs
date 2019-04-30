@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using ReadLater.BusinessLogic;
 using ReadLater.BusinessLogic.Pocket;
+using ReadLater.BusinessLogic.Read;
 using ReadLater.Data;
 using ReadLater.Database.Context;
 using ReadLater.Database.UserSession;
@@ -93,11 +94,10 @@ namespace ReadLater
                 };
             });
 
-            
-
             services.AddScoped<IPocketService, PocketService>();
             services.AddScoped<IUserSessionRepository, UserSessionRepository>();
             services.AddScoped<IUserSessionService, UserSessionService>();
+            services.AddTransient<IReadService, ReadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

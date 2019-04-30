@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
+using ReadLater.BusinessLogic.Read;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +11,11 @@ namespace ReadLater.BusinessLogic.Pocket
 {
     public class PocketService : IPocketService
     {
+        private IMapper _mapper;
         private HttpClient _client;
         private const string ConsumerKey = "84468-64a87fb1c2e843d4d28f1981";
 
-        public PocketService()
+        public PocketService(IMapper mapper)
         {
             _client = new HttpClient();
             _client.BaseAddress = new Uri("https://getpocket.com/v3");
@@ -57,12 +61,13 @@ namespace ReadLater.BusinessLogic.Pocket
             return token.Token;
         }
 
-        public async Task GetReadList(string token)
+        public async Task<PocketList> GetReadListAsync(string accessToken)
         {
             var content = new
             {
                 consumer_key = ConsumerKey,
-                access_token = token
+                access_token = accessToken,
+                count = 100
             };
 
             var json = JsonConvert.SerializeObject(content);
@@ -73,9 +78,9 @@ namespace ReadLater.BusinessLogic.Pocket
 
             var response = await _client.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<AccessToken>(responseContent);
+            var list = JsonConvert.DeserializeObject<PocketList>(responseContent);
 
-            return token.Token;
+            return list;
         }
     }
 }
