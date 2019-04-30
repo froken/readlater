@@ -7,5 +7,7 @@
         public string RequestToken { get; set; }
 
         public string AccessToken { get; set; }
+
+        public bool IsAuthorized { get; set; }
     }
 }

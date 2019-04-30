@@ -18,9 +18,9 @@ namespace ReadLater.BusinessLogic
             _userSessionRepository = userSessionRepository;
         }
 
-        public async Task<string> GetAccessTokenAsync(string userId)
+        public string GetAccessToken(string userName)
         {
-            var userSession = _userSessionRepository.GetUserSession(userId);
+            var userSession = _userSessionRepository.GetUserSession(userName);
 
             if (userSession == null || userSession.RequestToken == null)
             {
@@ -32,19 +32,25 @@ namespace ReadLater.BusinessLogic
                 return userSession.AccessToken;
             }
 
+            return null;
+        }
+
+        public async Task AuthorizeRequestTokenAsync(string userName)
+        {
+            var userSession = _userSessionRepository.GetUserSession(userName);
             var token = await _pocketService.GetAccessTokenAsync(userSession.RequestToken);
+
             userSession.AccessToken = token;
+            userSession.IsAuthorized = true;
 
             await _userSessionRepository.UpdateUserSessionAsync(userSession);
-
-            return token;
         }
 
         public async Task<string> GetRequestTokenAsync(string userName)
         {
             var userSession = _userSessionRepository.GetUserSession(userName);
 
-            if (userSession != null && userSession.RequestToken != null)
+            if (userSession != null && userSession.IsAuthorized)
             {
                 return userSession.RequestToken;
             }

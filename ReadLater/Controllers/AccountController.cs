@@ -30,7 +30,7 @@ namespace ReadLater.ReadLater
             {
                 UserName = model.UserName,
                 PasswordHash = model.Password,
-                Email = model.Email
+                Email = model.Email,
             };
 
             var result = await _userManager.CreateAsync(applicationUser, model.Password);
@@ -61,7 +61,7 @@ namespace ReadLater.ReadLater
         [Route("api/auth/login")]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
-             var result = await _signInManager.PasswordSignInAsync(
+            var result = await _signInManager.PasswordSignInAsync(
                 userName: login.UserName,
                 password: login.Password,
                 isPersistent: false,
@@ -78,22 +78,7 @@ namespace ReadLater.ReadLater
             }
             if (result.Succeeded)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim("user", login.UserName),
-                    new Claim("role", "Member")
-                };
-
-                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
-
-                if (Url.IsLocalUrl(login.ReturnUrl))
-                {
-                    return Redirect(login.ReturnUrl);
-                }
-                else
-                {
-                    return Redirect("/");
-                }
+                return Ok();
             }
 
             return Unauthorized();

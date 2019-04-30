@@ -6,7 +6,7 @@ import {MuiThemeProvider} from '@material-ui/core/styles';
 import history from '../history';
 import theme from '../theme';
 import HelloView from '../views/HelloView';
-import PocketView from '../views/PocketView';
+import ReadView from '../views/ReadView';
 
 export interface IState {}
 
@@ -36,7 +36,7 @@ export class AppRoutes extends React.Component<IProps & IStateProps & IDispatchP
         let authorizedRoutes: any;
 
         if (this.props.isAuthenticated && this.props.hasPocketCode) {
-            authorizedRoutes = <Route path="/" component={PocketView} />;
+            authorizedRoutes = <Route path="/" component={ReadView} />;
         }
         else if (this.props.isAuthenticated) {
             authorizedRoutes = <Route path="/" component={HelloView} />;

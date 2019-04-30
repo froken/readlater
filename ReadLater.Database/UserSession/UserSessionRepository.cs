@@ -13,7 +13,7 @@ namespace ReadLater.Database.UserSession
             _context = context;
         }
 
-        public async System.Threading.Tasks.Task<UserSession> CreateUserSessionAsync(string userName)
+        public async Task<UserSession> CreateUserSessionAsync(string userName)
         {
             var userSession = new UserSession
             {
@@ -38,6 +38,7 @@ namespace ReadLater.Database.UserSession
 
             session.AccessToken = userSession.AccessToken;
             session.RequestToken = userSession.RequestToken;
+            session.IsAuthorized = userSession.IsAuthorized;
 
             await _context.SaveChangesAsync();
         }

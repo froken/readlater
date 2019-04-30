@@ -18,14 +18,18 @@ namespace ReadLater.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ReadLater.Database.Models.UserSession", b =>
+            modelBuilder.Entity("ReadLater.Database.UserSession.UserSession", b =>
                 {
                     b.Property<string>("UserSessionId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessToken");
 
-                    b.Property<string>("UserId");
+                    b.Property<bool>("IsAuthorized");
+
+                    b.Property<string>("RequestToken");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("UserSessionId");
 

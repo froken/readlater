@@ -1,7 +1,8 @@
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 import pocketService from '../services/pocket-service';
-import {PocketAccount} from '../models/pocketAccount';
+import {PocketAccount} from '../models/pocket-account';
+import readService from '../services/read-service';
 
 // Action Type Enum
 export enum PocketActionTypes {
@@ -88,8 +89,11 @@ export function getPocketAccount(d: ThunkDispatch<any, any, Action>) {
                     account,
                 },
             };
+            var list = await readService.getReadList();
 
             dispatch(action);
+
+            
         } catch (e) {
             dispatch({
                 type: PocketActionTypes.GET_POCKET_ACCOUNT_ERROR,
