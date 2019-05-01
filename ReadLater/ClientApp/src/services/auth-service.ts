@@ -1,6 +1,7 @@
 ﻿import {User} from '../models/user';
 import RequestService from './request-service';
 import AuthResult from './auth-result';
+import { UserAccount } from '../models/user-account';
 
 class AuthService extends RequestService {
     constructor() {
@@ -11,7 +12,7 @@ class AuthService extends RequestService {
         return await this.request('/api/account', 'post', user);
     }
     
-    public async authenticate(): Promise<any> {
+    public async authenticate(): Promise<UserAccount> {
         return await this.requestWithResponse('/api/account', 'get', undefined);
     }
 

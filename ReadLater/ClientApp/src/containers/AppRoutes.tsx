@@ -9,7 +9,7 @@ import { getPocketAccount } from "../actions/pocket-actions";
 const mapStateToProps = (state: IRootState, props: IProps): IStateProps => {
   return {
       isAuthenticated: state.userState.isAuthenticated,
-      hasPocketCode: state.pocketState.accessToken ? true : false
+      isPocketAuthorized: state.userState.userAccount ? state.userState.userAccount.isPocketAuthorized : false
   };
 };
 

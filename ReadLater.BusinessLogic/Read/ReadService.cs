@@ -24,7 +24,7 @@ namespace ReadLater.BusinessLogic.Read
             var accessToken = _userSessionService.GetAccessToken(userName);
             var pocketReadList = await _pocketService.GetReadListAsync(accessToken);
             var items = pocketReadList.Items.Values.ToArray();
-
+            
             return _mapper.Map<List<ReadItem>>(items);
         }
     }

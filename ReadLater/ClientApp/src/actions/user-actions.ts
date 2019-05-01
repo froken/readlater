@@ -3,6 +3,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import history from '../history';
 import {User} from '../models/user';
 import authService from '../services/auth-service';
+import { UserAccount } from '../models/user-account';
 
 // Action Type Enum
 export enum UserActionTypes {
@@ -64,7 +65,7 @@ export interface IAuthenticate extends Action {
 export interface IAuthenticateSuccess extends Action {
     type: UserActionTypes.AUTHENTICATE_USER_SUCCESS;
     payload: {
-        userName: string | undefined;
+        userAccount: UserAccount
     };
 }
 
@@ -155,7 +156,7 @@ export function authenticate(
             
             const action: IAuthenticateSuccess = {
                 payload: {
-                    userName: response,
+                   userAccount: response
                 },
                 type: UserActionTypes.AUTHENTICATE_USER_SUCCESS,
             };

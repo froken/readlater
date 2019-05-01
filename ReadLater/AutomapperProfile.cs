@@ -13,7 +13,7 @@ namespace ReadLater
             CreateMap<BusinessLogic.Pocket.PocketItem, BusinessLogic.Read.ReadItem>()
                 .ForMember(d => d.Url, m => m.MapFrom(s => s.ResolvedUrl))
                 .ForMember(d => d.Title, m => m.MapFrom(s => s.ResolvedTitle))
-                .ForMember(d => d.Description, m => m.Ignore());
+                .ForMember(d => d.Description, m => m.MapFrom(s => s.Excerpt));
         }
     }
 }

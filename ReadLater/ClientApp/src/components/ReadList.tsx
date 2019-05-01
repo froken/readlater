@@ -11,20 +11,17 @@ import {
 } from '@material-ui/core';
 import {List} from 'immutable';
 import {ReadItem} from '../models/read-item';
+import ReadCard from './ReadCard';
 
 const styles = (theme: Theme) =>
     createStyles({
         root: {
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'left',
             height: '100%',
             flexDirection: 'column',
-        },
-        hello: {
-            textAlign: 'center',
-        },
-        login: {
-            marginTop: theme.spacing.unit * 5,
+            padding: theme.spacing.unit * 2,
+            paddingLeft: 200,
         },
     });
 
@@ -55,18 +52,14 @@ export class ReadList extends React.Component<
     render() {
         const {classes} = this.props;
         const items = this.props.readList.map(item => {
-            return (
-                <Grid container className={classes.root}>
-                    <Grid item>
-                        <ListItem button>
-                            <ListItemText primary={item.title} />
-                        </ListItem>
-                    </Grid>
-                </Grid>
-            );
+            return <ReadCard item={item} key={item.itemId} />;
         });
 
-        return <MaterialList component="nav">{items}</MaterialList>;
+        return (
+            <Grid container className={classes.root}>
+                {items}
+            </Grid>
+        );
     }
 }
 

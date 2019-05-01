@@ -14,7 +14,7 @@ export interface IProps {}
 
 export interface IStateProps {
     isAuthenticated: boolean;
-    hasPocketCode: boolean;
+    isPocketAuthorized: boolean;
 }
 
 export interface IDispatchProps {
@@ -29,13 +29,12 @@ export class AppRoutes extends React.Component<IProps & IStateProps & IDispatchP
 
     componentDidMount() {
         this.props.authenticate();
-        this.props.getPocketAccount();
     }
 
     public render() {
         let authorizedRoutes: any;
 
-        if (this.props.isAuthenticated && this.props.hasPocketCode) {
+        if (this.props.isAuthenticated && this.props.isPocketAuthorized) {
             authorizedRoutes = <Route path="/" component={ReadView} />;
         }
         else if (this.props.isAuthenticated) {

@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ReadLater.BusinessLogic;
 using ReadLater.Models;
+using System.Threading.Tasks;
 
 namespace ReadLater.ReadLater
 {
 
     public class AccountController : Controller
     {
+        private readonly IUserSessionService _userSessionService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IUserSessionService userSessionService)
         {
+            _userSessionService = userSessionService;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -45,16 +45,23 @@ namespace ReadLater.ReadLater
 
         [HttpGet]
         [Route("api/account")]
-        public async Task<IActionResult> Authenticate()
+        public async Task<IActionResult> GetAccount()
         {
             var result = await HttpContext.AuthenticateAsync();
-
-            if (result.Succeeded)
+        
+            if (!result.Succeeded)
             {
-                return Ok(result.Principal.Identity.Name);
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            var userName = result.Principal.Identity.Name;
+            var session = _userSessionService.GetUserSession(userName);
+
+            return new JsonResult(new AccountModel
+            {
+                UserName = userName,
+                IsPocketAuthorized = session.IsAuthorized
+            });
         }
 
         [HttpPost]

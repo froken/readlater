@@ -16,7 +16,7 @@ export interface IState {
 const styles = (theme: any) => ({
     root: {
         height: '100%',
-        minHeight: '100%',
+       //minHeight: '100%',
         alignItems: 'stretch'
     },
     header: {
@@ -45,13 +45,12 @@ export class Layout extends React.Component<IProps, IState> {
         return (
             <Grid container className={classes.root} direction="column">
                 <Grid item className={classes.header}>
-                    <Menu />
+                    <Menu displaySearch={false} />
                 </Grid>
                 <Grid item className={classes.content}>
                     {children}
                 </Grid>
                 <Grid item className={classes.footer}>
-                    Footer
                 </Grid>
             </Grid>
         );

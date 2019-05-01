@@ -1,16 +1,17 @@
 ﻿
 import { Reducer } from "redux";
 import { UserAction, UserActionTypes } from "../actions/user-actions";
+import { UserAccount } from "../models/user-account";
 
 // State Definition
 export interface IUserState {
-    userName: string | undefined,
+    userAccount: UserAccount | undefined,
     isAuthenticated: boolean
 };
 
 // Initial State
 export const initialUserState: IUserState = {
-    userName: undefined,
+    userAccount: undefined,
     isAuthenticated: false
 };
 
@@ -23,7 +24,7 @@ export let reducer: Reducer<IUserState, UserAction> =
             case UserActionTypes.LOGIN_USER_SUCCESS:
                 return { ...state, userName: action.payload.userName };
             case UserActionTypes.AUTHENTICATE_USER_SUCCESS:
-                return { ...state, userName: action.payload.userName, isAuthenticated: true };
+                return { ...state, userAccount: action.payload.userAccount, isAuthenticated: true };
             case UserActionTypes.AUTHENTICATE_USER_ERROR:
                 return { ...state, userName: undefined, isAuthenticated: false };
             default:
